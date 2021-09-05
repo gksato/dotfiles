@@ -56,3 +56,6 @@ flycheck_*.el
 
 # For my Emacs setup with package leaf; custom UI expr is dumped and ignored
 /custom-dump.el
+
+# Cache (introduced for lsp-pyright)
+/.cache
