@@ -76,7 +76,7 @@
   (lsp-keymap-prefix . "C-c l")
   :config
   (leaf lsp-enable-which-key-integration
-    :when (fboundp #'which-key)
+    :when (package-installed-p 'which-key)
     :hook ((lsp-mode-hook . lsp-enable-which-key-integration)))
   (leaf lsp-ui
     :ensure t
@@ -96,7 +96,7 @@
   :hook ((haskell-mode-hook . turn-on-haskell-indentation))
   :config
   (leaf lsp-haskell
-    :when (fboundp #'lsp)
+    :when (package-installed-p 'lsp-mode)
     :ensure t
     :hook (haskell-mode-hook . lsp)))
 
