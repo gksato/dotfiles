@@ -1,0 +1,141 @@
+;;; -*- lexical-binding: t -*-
+
+(eval-and-compile
+  (when (or load-file-name byte-compile-current-file)
+    (setq user-emacs-directory
+          (expand-file-name
+           (file-name-directory (or load-file-name byte-compile-current-file))))))
+
+(eval-and-compile
+  (customize-set-variable
+   'package-archives '(("org"   . "https://orgmode.org/elpa/")
+                       ("melpa" . "https://melpa.org/packages/")
+                       ("gnu"   . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
+
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t)
+    (leaf blackout :ensure t)
+
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init)))
+
+;; ここにいっぱい設定を書く
+(leaf leaf
+  :config
+  (leaf leaf-convert
+    :ensure t
+    :config (leaf use-package :ensure t))) 
+
+(leaf cus-edit
+  :doc "tools for customizing Emacs and Lisp packages"
+  :tag "builtin" "faces" "help"
+  :custom `((custom-file . ,(locate-user-emacs-file "custom-dump.el"))))
+
+(leaf global-custom
+  :custom
+  (mac-option-modifier . '(:ordinary meta :function meta :mouse meta))
+  :config
+  (tool-bar-mode -1)
+  (global-visual-line-mode)
+  (global-display-line-numbers-mode))
+
+(leaf exec-path-from-shell
+  :when (memq window-system '(mac ns x))
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
+(leaf dired
+  :custom `((insert-directory-program . ,(or (executable-find "gls")
+                                             (executable-find "ls")))))
+
+(leaf company
+  :ensure t)
+
+(leaf flycheck
+  :ensure t)
+
+
+(leaf which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(leaf lsp-mode
+  :ensure t
+  :commands lsp-enable-which-key-integration lsp
+  :custom
+  (lsp-keymap-prefix . "C-c l")
+  :config
+  (leaf lsp-enable-which-key-integration
+    :when (fboundp #'which-key)
+    :hook ((lsp-mode-hook . lsp-enable-which-key-integration)))
+  (leaf lsp-ui
+    :ensure t
+    :commands lsp-ui-mode)
+  (leaf helm-lsp
+    :disabled t
+    :commands helm-lsp-workspace-symbol)
+  (leaf lsp-ivy
+    :disabled t
+    :commands lsp-ivy-workspace-symbol)
+  (leaf lsp-treemacs
+    :disabled t
+    :commands lsp-treemacs-errors-list))
+
+(leaf haskell-mode
+  :ensure t
+  :hook ((haskell-mode-hook . turn-on-haskell-indentation))
+  :config
+  (leaf lsp-haskell
+    :when (fboundp #'lsp)
+    :ensure t
+    :hook (haskell-mode-hook . lsp)))
+
+(leaf org-mode
+  :hook ((org-mode-hook . org-indent-mode)))
+
+(leaf python
+  :config
+  (leaf python-)
+  )
+
+(leaf magit
+  :ensure t
+  :config
+  (leaf magit-ssh-agent
+    :preface
+    (defvar my-magit-ssh-agent-existing nil)
+    (defun my-register-local-sshagent-for-magit nil
+      (let ((ssh-executable (executable-find "ssh-agent")))
+        (unless my-magit-ssh-agent-existing
+          (with-temp-buffer
+            (call-process ssh-executable nil '(t t))
+            (goto-char 1)
+            (while (re-search-forward "^\\(SSH_[^=]+\\)=\\([^;]+\\)" nil t)
+              (setenv (match-string 1) (match-string 2))))
+          (setenv "GIT_SSH_COMMAND" "ssh -o AddKeysToAgent=yes")
+          (setq my-magit-ssh-agent-existing t)
+          (add-hook
+           'kill-emacs-hook
+	   `(lambda nil
+              (call-process ,ssh-executable nil nil nil "-k"))))))
+    :defun my-register-local-sshagent-for-magit
+    :hook
+    ((magit-credential-hook . my-register-local-sshagent-for-magit))))
+
+(provide 'init)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
+
+;;; init.el ends here
