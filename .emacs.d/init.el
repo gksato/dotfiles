@@ -114,7 +114,14 @@
 
 (leaf python
   :config
-  (leaf python-)
+  (leaf lsp-pyright
+    :when (package-installed-p 'lsp-mode)
+    :ensure t
+    :hook
+    (python-mode-hook . (lambda () (require 'lsp-pyright)
+                          (lsp))))
+  (leaf poetry
+    :disabled t)
   )
 
 (leaf magit
