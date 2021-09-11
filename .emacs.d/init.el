@@ -145,6 +145,7 @@
 	   `(lambda nil
               (call-process ,ssh-executable nil nil nil "-k"))))))
     :defun my-register-local-sshagent-for-magit
+    :custom (transient-default-level . 7)
     :hook
     ((magit-credential-hook . my-register-local-sshagent-for-magit))))
 
