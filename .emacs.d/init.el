@@ -112,6 +112,10 @@
 (leaf org-mode
   :hook ((org-mode-hook . org-indent-mode)))
 
+(leaf yaml-mode
+  :ensure t
+  )
+
 (leaf python
   :config
   (leaf lsp-pyright
