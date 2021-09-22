@@ -68,10 +68,9 @@
   :blackout t
   :hook (((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode))
   :custom (
-           (highlight-indent-guides-method . 'character)
+           (highlight-indent-guides-method . 'bitmap)
            (highlight-indent-guides-auto-enabled . t)
-           (highlight-indent-guides-responsive . t)
-           (highlight-indent-guides-character . ?|)))
+           (highlight-indent-guides-responsive . t)))
 
 (leaf which-key
   :ensure t
@@ -125,7 +124,7 @@
     (python-mode-hook . (lambda () (require 'lsp-pyright)
                           (lsp))))
   (leaf poetry
-    :disabled t)
+    :ensure t)
   )
 
 (leaf magit
