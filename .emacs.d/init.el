@@ -53,8 +53,11 @@
   :config (exec-path-from-shell-initialize))
 
 (leaf dired
-  :custom `((insert-directory-program . ,(or (executable-find "gls")
-                                             (executable-find "ls")))))
+  :config
+  ;; make sure run-time evaluation of lsprog; not compile-time.
+  (let ((lsprog (or (executable-find "gls") (executable-find "ls"))))
+    (leaf dired-custom
+      :custom (insert-directory-program . lsprog))))
 
 (leaf company
   :ensure t)
