@@ -114,8 +114,7 @@
   :hook ((org-mode-hook . org-indent-mode)))
 
 (leaf yaml-mode
-  :ensure t
-  )
+  :ensure t)
 
 (leaf python
   :config
