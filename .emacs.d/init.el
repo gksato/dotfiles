@@ -35,11 +35,17 @@
     :config (leaf use-package :ensure t))) 
 
 (leaf cus-edit
+  ;; this leaf is related to no package,
+  ;; so there's nothing to eval-after-load.
+  :leaf-defer nil
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom-dump.el"))))
 
 (leaf global-custom
+  ;; this leaf is related to no package,
+  ;; so there's nothing to eval-after-load.
+  :leaf-defer nil
   :custom
   (mac-option-modifier . '(:ordinary meta :function meta :mouse meta))
   :config
@@ -53,6 +59,9 @@
   :config (exec-path-from-shell-initialize))
 
 (leaf dired
+  ;; this leaf is related to no package,
+  ;; so there's nothing to eval-after-load.
+  :leaf-defer nil
   :config
   ;; make sure run-time evaluation of lsprog; not compile-time.
   (let ((lsprog (or (executable-find "gls") (executable-find "ls"))))
@@ -84,7 +93,7 @@
   :commands lsp-enable-which-key-integration lsp
   :custom
   (lsp-keymap-prefix . "C-c l")
-  :config
+  :init
   (leaf lsp-enable-which-key-integration
     :when (package-installed-p 'which-key)
     :hook ((lsp-mode-hook . lsp-enable-which-key-integration)))
@@ -104,7 +113,7 @@
 (leaf haskell-mode
   :ensure t
   :hook ((haskell-mode-hook . turn-on-haskell-indentation))
-  :config
+  :init
   (leaf lsp-haskell
     :when (package-installed-p 'lsp-mode)
     :ensure t
@@ -117,7 +126,7 @@
   :ensure t)
 
 (leaf python
-  :config
+  :init
   (leaf lsp-pyright
     :when (package-installed-p 'lsp-mode)
     :ensure t
