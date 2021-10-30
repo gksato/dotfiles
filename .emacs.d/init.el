@@ -122,6 +122,12 @@
 (leaf org-mode
   :hook ((org-mode-hook . org-indent-mode)))
 
+(leaf auctex
+  :ensure t
+  :init
+  (leaf auctex-cluttex
+    :ensure t))
+
 (leaf yaml-mode
   :ensure t)
 
