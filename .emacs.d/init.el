@@ -113,7 +113,6 @@
 
 (leaf haskell-mode
   :ensure t
-  :hook ((haskell-mode-hook . turn-on-haskell-indentation))
   :init
   (leaf lsp-haskell
     :when (package-installed-p 'lsp-mode)
