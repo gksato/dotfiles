@@ -126,7 +126,11 @@
   :ensure t
   :init
   (leaf auctex-cluttex
-    :ensure t))
+    :ensure t)
+  :custom
+  (TeX-parse-self . t) ; Enable parse on load.
+  (TeX-auto-save . t) ; Enable parse on save.
+  )
 
 (leaf yaml-mode
   :ensure t)
