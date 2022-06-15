@@ -29,6 +29,7 @@
 
 ;; ここにいっぱい設定を書く
 (leaf leaf
+  :ensure t
   :config
   (leaf leaf-convert
     :ensure t
