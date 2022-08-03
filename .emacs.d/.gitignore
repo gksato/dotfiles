@@ -62,3 +62,6 @@ flycheck_*.el
 
 # Cache for org-mode
 /bookmarks
+
+# Game saves
+/games/*
