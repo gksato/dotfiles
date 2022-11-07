@@ -119,6 +119,18 @@
     :ensure t
     :hook (haskell-mode-hook . lsp)))
 
+(leaf rust-mode
+  :ensure t
+  :custom (rust-format-on-save . t)
+  :init
+  (leaf lsp-rust
+    :when (package-installed-p 'lsp-mode)
+    :hook (rust-mode-hook . lsp)
+    :custom (lsp-rust-server . 'rls))
+  (leaf cargo
+    :ensure t
+    :hook (rust-mode-hook . cargo-minor-mode)))
+
 (leaf org-mode
   :hook ((org-mode-hook . org-indent-mode)))
 
