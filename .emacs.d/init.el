@@ -49,6 +49,8 @@
   :leaf-defer nil
   :custom
   (mac-option-modifier . '(:ordinary meta :function meta :mouse meta))
+  `(read-process-output-max . ,(* 1024 1024)) ;; 1mb for lsp-mode
+  (gc-cons-threshold . 100000000) ;; 100mb for lsp-mode
   :config
   (tool-bar-mode -1)
   (global-visual-line-mode)
@@ -89,6 +91,10 @@
   :config
   (which-key-mode))
 
+
+;; see the function lsp-doctor and the leaves
+;; global-custom/read-process-output-max
+;; and global-custom/gc-cons-threshold for variables tweaked for this.
 (leaf lsp-mode
   :ensure t
   :commands lsp-enable-which-key-integration lsp
